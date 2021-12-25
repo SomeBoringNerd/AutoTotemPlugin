@@ -1,0 +1,13 @@
+name: VanillaCPVPUtility
+version: '_indev 1.0'
+main: io.github.someboringnerd.MainClass
+api-version: 1.16
+authors: [SomeBoringNerd]
+description: a CPVP plugin for Tax's vanilla cpvp server, include color text and a autototem
+commands:
+  colorhelp:
+    description: give the colors code
+    usage: /colorhelp
+  autototemtoggle:
+    description: toggle on or off the autototem
+    usage: /staffchattoggle <On | Off>
