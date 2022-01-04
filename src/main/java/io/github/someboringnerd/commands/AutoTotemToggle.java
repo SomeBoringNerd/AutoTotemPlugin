@@ -22,7 +22,13 @@ public class AutoTotemToggle implements CommandExecutor
         Player player = (Player) sender;
 
         MainClass.PlayerUseTotem.replace(player, !MainClass.PlayerUseTotem.get(player));
-        sender.sendMessage("§4[CPVPUTILITY]§2 : your Auto-Totem was set to §1" + (MainClass.PlayerUseTotem.get(player) ? "on" : "off"));
+	
+	if(args.lenght > 0){        
+		if(args[0] == "soft" || args[0] == "hard"){
+			MainClass.PlayerUseSoftMode.replace(player, (args[0] == "soft"));
+		}
+        }
+        sender.sendMessage("§4[CPVPUTILITY]§2 : your Auto-Totem was set to §1" + (MainClass.PlayerUseTotem.get(player) ? "on" : "off") + " and in " + (MainClass.PlayerUseSoftMode.get(player) ? "soft" : "hard") + " mode");
         return true;
     }
 }

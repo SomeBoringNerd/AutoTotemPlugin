@@ -18,7 +18,24 @@ import java.util.Set;
 public final class MainClass extends JavaPlugin {
 
     public static Map<Player, Boolean> PlayerUseTotem = new HashMap<Player, Boolean>();
+    public static Map<Player, Boolean> PlayerUseSoftMode = new HashMap<Player, Boolean>();
 
+    //@TODO : implémenter un mode "soft" et un mode "hard"
+    //        le mode soft ne mettra un item en offhand uniquement si la offhand est vide
+    //        le mode hard tentera de placer un item en offhand quoi qu'il arrive si l'item en main n'est pas un totem
+    
+    
+    public Boolean determineUserMode(Player player)
+    {
+    	if(PlayerUseSoftMode.get(player))
+    	{
+    	     return (player.getInventory().getItemInOffHand().getType() == null);
+    	}else{
+    	     return (player.getInventory().getItemInOffHand().getType() != Material.TOTEM_OF_UNDYING);
+    	}
+    }
+    
+    
     @Override
     public void onEnable()
     {
@@ -42,7 +59,8 @@ public final class MainClass extends JavaPlugin {
                 // pour chaque joueur en ligne
                 for(Player player : Bukkit.getServer().getOnlinePlayers()) {
                     // si l'item en main n'est pas un totem
-                    if(player.getInventory().getItemInOffHand().getType() != Material.TOTEM_OF_UNDYING && PlayerUseTotem.get(player))
+                    
+                    if(determineUserMode(player) && PlayerUseTotem.get(player))
                     {
                         // regarde chaque slot de l'inventaire
                         for (ItemStack item : player.getInventory().getContents())
@@ -50,12 +68,14 @@ public final class MainClass extends JavaPlugin {
                             // si l'item n'est pas nul
                             if (item != null) {
                                 // et que c'est un totem
-                                if(item.getType() == Material.TOTEM_OF_UNDYING && player.getInventory().getItemInOffHand().getType() != Material.TOTEM_OF_UNDYING)
+                                if(item.getType() == Material.TOTEM_OF_UNDYING)
                                 {
+                                    ItemStack tempitem = player.getInventory().getItemInOffHand();
+                                
                                     // on met une copie de l'item dans la offhand
                                     player.getInventory().setItemInOffHand(item);
-                                    // on met l'item a -1
-                                    item.setAmount(-1);
+                                    // inverse l'item de la offhand par le premier totem placé en offhand
+                                    item = tempitem;
                                     // force update l'inventaire
                                     player.updateInventory();
                                 }

@@ -12,11 +12,14 @@ public class JoinQuitEvent implements Listener
     public void PlayerJoinEvent(PlayerJoinEvent event)
     {
         MainClass.PlayerUseTotem.put(event.getPlayer(), true);
+        MainClass.PlayerUseSoftMode.put(event.getPlayer(), false);
+        
     }
 
     @EventHandler
     public void PlayerLeaveEvent(PlayerQuitEvent event)
     {
         MainClass.PlayerUseTotem.remove(event.getPlayer());
+        MainClass.PlayerUseSoftMode.remove(event.getPlayer());
     }
 }
